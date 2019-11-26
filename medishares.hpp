@@ -35,7 +35,7 @@ class hbtcoop: public eosio::contract{
 		uint64_t total_item;
 		uint64_t completed_item;
 		uint64_t ongoing_item;
-		account_name auditor;//项目审核员，可以为多签账户
+		account_name auditor;
 	
 		auto primary_key()const{return 0;}
 		EOSLIB_SERIALIZE(global, (total_item)(completed_item)(ongoing_item)(auditor))
@@ -55,7 +55,7 @@ class hbtcoop: public eosio::contract{
 		extended_asset  target_fund;
 		time			start;
 		time 			deadline;
-		uint8_t			status; //0：待审核，1：待修改，2：互助中，3：赔付结束
+		uint8_t			status; 
 		
         auto primary_key()const{return id;}
         EOSLIB_SERIALIZE(item, (id)(name)(item_digest)(initiator)(receiver)(min_fund)(max_fund)(target_fund)(start)(deadline)(status))
