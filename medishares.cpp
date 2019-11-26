@@ -1,11 +1,11 @@
-#include <medishares.hpp>
+#include <hbtcoop.hpp>
 #include <eosiolib/time.hpp>
 
 using namespace eosio;
 
 uint64_t year_second = 365*24*3600;
 
-void medishares::add(const account_name initiator, const std::string name, const checksum256 item_digest, const account_name receiver, const extended_asset& min_fund, const extended_asset& max_fund, const extended_asset& target_fund, const uint64_t deadline)
+void hbtcoop::add(const account_name initiator, const std::string name, const checksum256 item_digest, const account_name receiver, const extended_asset& min_fund, const extended_asset& max_fund, const extended_asset& target_fund, const uint64_t deadline)
 {
 	eosio_assert( name.size() <= 256, "the name of item has more than 256 bytes");
 	eosio_assert( is_account(receiver), "receiver account does not exist");
@@ -55,7 +55,7 @@ void medishares::add(const account_name initiator, const std::string name, const
 
 }
     
-void medishares::modify(const account_name initiator, const uint64_t id, const std::string name, const checksum256 item_digest, const account_name receiver, const extended_asset& min_fund, const extended_asset& max_fund, const extended_asset& target_fund, const uint64_t deadline)
+void hbtcoop::modify(const account_name initiator, const uint64_t id, const std::string name, const checksum256 item_digest, const account_name receiver, const extended_asset& min_fund, const extended_asset& max_fund, const extended_asset& target_fund, const uint64_t deadline)
 {
     eosio_assert( name.size() <= 256, "the name of item has more than 256 bytes");
     eosio_assert( is_account(receiver), "receiver account does not exist");    
@@ -86,7 +86,7 @@ void medishares::modify(const account_name initiator, const uint64_t id, const s
     });
 }
 
-void medishares::erase(const account_name initiator, const std::string name)
+void hbtcoop::erase(const account_name initiator, const std::string name)
 {
 	items_table items(_self, initiator);
     auto ite = items.begin();
@@ -99,7 +99,7 @@ void medishares::erase(const account_name initiator, const std::string name)
     items.erase(ite);
 }
 
-void medishares::audit(const account_name initiator, const std::string name, const uint8_t flag)
+void hbtcoop::audit(const account_name initiator, const std::string name, const uint8_t flag)
 {
 	items_table items(_self, initiator);
     auto ite = items.begin();
@@ -113,7 +113,7 @@ void medishares::audit(const account_name initiator, const std::string name, con
 	eosio_assert(glb != global.end(), "the global table does not exist");
     require_auth(glb->auditor);
 
-	if(flag == 2){//审核通过
+	if(flag == 2){
 		items.modify(ite, 0, [&](auto& it){
 			it.start = now();
 			it.status = 2;
@@ -122,16 +122,16 @@ void medishares::audit(const account_name initiator, const std::string name, con
         global.modify(glb, 0, [&](auto& gl){
             gl.ongoing_item = gl.ongoing_item + 1;
         });
-	}else if(flag == 1){//审核不通过，待修改
+	}else if(flag == 1){
 		items.modify(ite, 0, [&](auto& it){
             it.status = 1;
         });
-	}else if(flag == 0){//不合规，删除
+	}else if(flag == 0){
 		items.erase(ite);
 	}
 }
 
-void medishares::setauditor(const account_name auditor)
+void hbtcoop::setauditor(const account_name auditor)
 {
 	eosio_assert( is_account(auditor), "auditor account does not exist");
 	auto glb = global.begin();
