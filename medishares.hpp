@@ -7,9 +7,9 @@ using namespace eosio;
 using std::string;
 using namespace std;
 
-class medishares: public eosio::contract{
+class hbtcoop: public eosio::contract{
   public:
-    medishares(account_name self):
+    hbtcoop(account_name self):
     contract(self),
 	global(_self, _self){}
 
@@ -55,7 +55,7 @@ class medishares: public eosio::contract{
 		extended_asset  target_fund;
 		time			start;
 		time 			deadline;
-		uint8_t			status; //0：待审核，1：待修改，2：筹款中，3：筹款结束
+		uint8_t			status; //0：待审核，1：待修改，2：互助中，3：赔付结束
 		
         auto primary_key()const{return id;}
         EOSLIB_SERIALIZE(item, (id)(name)(item_digest)(initiator)(receiver)(min_fund)(max_fund)(target_fund)(start)(deadline)(status))
@@ -64,5 +64,5 @@ class medishares: public eosio::contract{
 
 };
 
-EOSIO_ABI(medishares, (add)(modify)(erase)(audit)(setauditor))
+EOSIO_ABI(hbtcoop, (add)(modify)(erase)(audit)(setauditor))
 
